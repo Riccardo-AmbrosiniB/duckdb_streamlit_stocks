@@ -13,11 +13,15 @@ class Visualizer:
         )
         return fig
 
-    def plot_time_series_ma(self, df, x_col, y_col, stock_code, ma_window):
-        fig = px.line(df, x=x_col, y=y_col, title=f"Stock {stock_code} Price")
+    def plot_time_series_ma(
+        self, df, x_date_col, y_stock_price_col, y_ma_col, stock_code, ma_window
+    ):
+        fig = px.line(
+            df, x=x_date_col, y=y_stock_price_col, title=f"Stock {stock_code} Price"
+        )
         fig.add_scatter(
-            x=df[x_col],
-            y=df[y_col],
+            x=df[x_date_col],
+            y=df[y_ma_col],
             mode="lines",
             name=f"{ma_window}-Day Rolling Average",
             line=dict(color="orange", dash="dash"),

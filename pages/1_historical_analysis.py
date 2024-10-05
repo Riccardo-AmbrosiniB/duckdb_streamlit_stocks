@@ -39,7 +39,12 @@ if st.button("Compute time series chart with moving average"):
     stock_data = processor.get_stock_data_rolling_average(selected_stock, ma_window)
     logger.info("Calculated dataframe. Starting visualization")
     plt_rolling_average = Visualizer().plot_time_series_ma(
-        stock_data, "date", "close", selected_stock, ma_window
+        df=stock_data,
+        x_date_col="date",
+        y_stock_price_col="close",
+        y_ma_col="moving_average",
+        stock_code=selected_stock,
+        ma_window=ma_window,
     )
 
     # st.plotly_chart(plt_rolling_average)
@@ -58,16 +63,15 @@ if st.button("Compute time series chart with moving average"):
         marker_col="return_color",
         selected_stock=selected_stock,
     )
-    # st.plotly_chart(plt_returns)
 
-    # TODO: Try fixing axes synchronization
-    # Synchronize both charts to zoom/pan together
-    plt_rolling_average.update_layout(xaxis_rangeslider_visible=False)
-    plt_returns.update_layout(xaxis_rangeslider_visible=False)
+    # # TODO: Try fixing axes synchronization
+    # # Synchronize both charts to zoom/pan together
+    # plt_rolling_average.update_layout(xaxis_rangeslider_visible=False)
+    # plt_returns.update_layout(xaxis_rangeslider_visible=False)
 
-    # Adding the synchronized updates using Plotly's relayout event
-    plt_rolling_average.update_xaxes(matches="x")
-    plt_returns.update_xaxes(matches="x")
+    # # Adding the synchronized updates using Plotly's relayout event
+    # plt_rolling_average.update_xaxes(matches="x")
+    # plt_returns.update_xaxes(matches="x")
 
     # Display both charts
     st.plotly_chart(plt_rolling_average)
