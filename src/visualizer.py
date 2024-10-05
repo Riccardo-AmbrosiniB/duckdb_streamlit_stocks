@@ -1,8 +1,10 @@
 import plotly.express as px
 import plotly.graph_objects as go
+import matplotlib.pyplot as plt
+from statsmodels.graphics.tsaplots import plot_acf
 
 
-class Visualizer:
+class PlotlyVisualizer:
     def plot_line_chart(
         self, df, x_col, y_col, title="Line Chart", x_label=None, y_label=None
     ):
@@ -54,4 +56,37 @@ class Visualizer:
             showlegend=False,
         )
 
+        return fig
+
+
+class MatplotlibVisualizer:
+    def tsa_plots(self, seasonal_decompose, timeseries):
+        fig, axs = plt.subplots(2, 2, figsize=(12, 10))  # Adjust figsize as needed
+        fig.tight_layout(pad=4.0)  # Adjust padding between plots
+
+        # Plot each component in the first three quadrants
+        seasonal_decompose.trend.plot(
+            ax=axs[0, 0], title="Trend Component", color="blue"
+        )
+        axs[0, 0].set_xlabel("Date")
+        axs[0, 0].set_ylabel("Values")
+
+        seasonal_decompose.seasonal.plot(
+            ax=axs[0, 1], title="Seasonal Component", color="orange"
+        )
+        axs[0, 1].set_xlabel("Date")
+        axs[0, 1].set_ylabel("Values")
+
+        seasonal_decompose.resid.plot(
+            ax=axs[1, 0], title="Residual Component", color="green"
+        )
+        axs[1, 0].set_xlabel("Date")
+        axs[1, 0].set_ylabel("Values")
+
+        # Plot the ACF in the last quadrant
+        plot_acf(timeseries, ax=axs[1, 1])  # Specify the fourth axis
+        axs[1, 1].set_title("Autocorrelation Function (ACF)")
+
+        # Adjust layout
+        plt.tight_layout()
         return fig

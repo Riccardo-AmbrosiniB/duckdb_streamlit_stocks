@@ -4,7 +4,7 @@ from src.data_processor import DataProcessor
 from src.logger import setup_logger
 from src.data_loader import DataLoader
 from src.data_processor import DataProcessor
-from src.visualizer import Visualizer
+from src.visualizer import PlotlyVisualizer
 import plotly.graph_objects as go
 
 logger = setup_logger(__name__)
@@ -32,13 +32,13 @@ if st.button("Compute time series chart with moving average"):
     # stock_data = processor.get_stock_data(selected_stock)
     # stock_data["moving_average"] = stock_data["close"].rolling(window=ma_window).mean()
     # logger.info("Calculated dataframe. Starting visualization")
-    # plt = Visualizer().plot_time_series_ma(
+    # plt = PlotlyVisualizer().plot_time_series_ma(
     #     stock_data, "date", "close", selected_stock, ma_window
     # )
     # Get data with moving average with a query
     stock_data = processor.get_stock_data_rolling_average(selected_stock, ma_window)
     logger.info("Calculated dataframe. Starting visualization")
-    plt_rolling_average = Visualizer().plot_time_series_ma(
+    plt_rolling_average = PlotlyVisualizer().plot_time_series_ma(
         df=stock_data,
         x_date_col="date",
         y_stock_price_col="close",
@@ -56,7 +56,7 @@ if st.button("Compute time series chart with moving average"):
     stock_return["return_color"] = stock_return["daily_return"].apply(
         lambda x: "green" if x > 0 else "red"
     )
-    plt_returns = Visualizer().plot_stock_returns_chart(
+    plt_returns = PlotlyVisualizer().plot_stock_returns_chart(
         df=stock_return,
         x_col="date",
         y_col="daily_return",

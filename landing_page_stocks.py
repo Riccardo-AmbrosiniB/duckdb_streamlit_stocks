@@ -3,7 +3,7 @@
 import streamlit as st
 from src.data_loader import DataLoader
 from src.data_processor import DataProcessor
-from src.visualizer import Visualizer
+from src.visualizer import PlotlyVisualizer
 from src.logger import setup_logger
 import logging
 
@@ -21,7 +21,7 @@ st.dataframe(data=df, use_container_width=True)
 summary_df = processor.get_summary_stats()
 
 # Plot charts
-visualizer = Visualizer()
+visualizer = PlotlyVisualizer()
 st.plotly_chart(
     visualizer.plot_line_chart(
         summary_df,

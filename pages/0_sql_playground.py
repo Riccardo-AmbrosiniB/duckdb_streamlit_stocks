@@ -4,7 +4,7 @@ from src.data_processor import DataProcessor
 from src.logger import setup_logger
 from src.data_loader import DataLoader
 from src.data_processor import DataProcessor
-from src.visualizer import Visualizer
+from src.visualizer import PlotlyVisualizer
 
 logger = setup_logger(__name__)
 
