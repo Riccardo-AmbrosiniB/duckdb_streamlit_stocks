@@ -1,6 +1,7 @@
 import plotly.express as px
 import plotly.graph_objects as go
 import matplotlib.pyplot as plt
+import pandas as pd
 from statsmodels.graphics.tsaplots import plot_acf
 
 
@@ -89,4 +90,27 @@ class MatplotlibVisualizer:
 
         # Adjust layout
         plt.tight_layout()
+        return fig
+
+    def prediction_plot(self, time_series, forecast, conf_int, n_periods=60):
+        fig = plt.figure(figsize=(12, 6))
+        time_series = time_series.tail(n_periods * 3)
+        plt.plot(time_series, label="Historical Data")
+        plt.plot(
+            pd.date_range(time_series.index[-1], periods=n_periods, freq="D"),
+            forecast,
+            label="Forecast",
+        )
+        plt.fill_between(
+            pd.date_range(time_series.index[-1], periods=n_periods, freq="D"),
+            conf_int[:, 0],
+            conf_int[:, 1],
+            color="pink",
+            alpha=0.3,
+        )
+        plt.xlabel("Date")
+        plt.ylabel("Stock Price")
+        plt.title("Stock Price Forecast")
+        plt.legend()
+        plt.grid()
         return fig

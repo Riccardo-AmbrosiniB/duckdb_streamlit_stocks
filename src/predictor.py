@@ -1,6 +1,7 @@
 from statsmodels.tsa.arima.model import ARIMA
 from statsmodels.tsa.stattools import adfuller
 from statsmodels.tsa.seasonal import seasonal_decompose
+from pmdarima import auto_arima
 from .logger import setup_logger
 
 logger = setup_logger(__name__)
@@ -26,6 +27,20 @@ class Predictor:
         else:
             logger.info("Time series is not stationary")
             return False
+
+    def auto_arima(self, stock_data):
+        stepwise_model = auto_arima(
+            stock_data,
+            start_p=1,
+            start_q=1,
+            max_p=10,
+            max_q=10,
+            seasonal=True,
+            trace=True,
+            suppress_warnings=True,
+            stepwise=True,
+        )
+        return stepwise_model
 
     def fit_arma_model(self, timeseries, p, d, q):
         # Fit the ARMA model
